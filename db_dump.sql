@@ -5,12 +5,13 @@
 DROP TABLE IF EXISTS `products`;
 
 CREATE TABLE `products` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `price` decimal(10,2) NOT NULL,
+  `is_deleted` tinyint NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `products_price_IDX` (`price`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `products` (`id`, `title`, `price`) VALUES ('1', 'est', '6241.48');
 INSERT INTO `products` (`id`, `title`, `price`) VALUES ('2', 'rem', '7138.88');
