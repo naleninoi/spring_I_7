@@ -5,10 +5,13 @@ import org.springframework.data.domain.Pageable;
 import ru.gb.task7.model.Product;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductService {
 
-    Product findById(Long id);
+    Optional<Product> findById(Long id);
+
+    Optional<Product> findByTitle(String title);
 
     List<Product> findAllProducts();
 

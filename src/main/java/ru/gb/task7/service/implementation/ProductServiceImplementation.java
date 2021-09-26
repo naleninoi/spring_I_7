@@ -8,6 +8,7 @@ import ru.gb.task7.repository.ProductRepository;
 import ru.gb.task7.service.ProductService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductServiceImplementation implements ProductService {
@@ -19,8 +20,13 @@ public class ProductServiceImplementation implements ProductService {
     }
 
     @Override
-    public Product findById(Long id) {
-        return productRepository.findById(id).orElse(null);
+    public Optional<Product> findById(Long id) {
+        return productRepository.findByIdAndIsDeletedIsFalse(id);
+    }
+
+    @Override
+    public Optional<Product> findByTitle(String title) {
+        return productRepository.findByTitleAndIsDeletedIsFalse(title);
     }
 
     @Override

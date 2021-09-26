@@ -6,7 +6,10 @@ import org.springframework.web.bind.annotation.*;
 import ru.gb.task7.model.Product;
 import ru.gb.task7.service.ProductService;
 
+import java.net.URI;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "products")
@@ -37,37 +40,42 @@ public class ProductRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable Long id) {
-        Product product = productService.findById(id);
-        if (product != null) {
-            return ResponseEntity.ok(product);
+        Optional<Product> product = productService.findById(id);
+        if (product.isPresent()) {
+            return ResponseEntity.ok(product.get());
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
-    @GetMapping("/{id}/delete")
-    public ResponseEntity<List<Product>> deleteProduct(@PathVariable Long id) {
-        Product product = productService.findById(id);
-        if (product != null) {
-            productService.delete(product);
-            List<Product> products = productService.findAllProducts();
-            return ResponseEntity.ok(products);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteProduct(@PathVariable Long id) {
+        Optional<Product> product = productService.findById(id);
+        if (product.isPresent()) {
+            productService.delete(product.get());
+            return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
     @PostMapping()
-    public ResponseEntity<List<Product>> addProduct(@RequestBody Product product) {
-        try {
-            productService.save(product);
-            List<Product> products = productService.findAllProducts();
-            return ResponseEntity.ok(products);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    public ResponseEntity<Product> createOrUpdateProduct(@RequestBody Product productDto) {
+        Optional <Product> product = productService.findByTitle(productDto.getTitle());
+        if (product.isPresent()) {
+            product.get().setPrice(productDto.getPrice());
+            productService.save(product.get());
+            return ResponseEntity.ok(product.get());
+        } else {
+            productService.save(productDto);
+            return ResponseEntity.created( URI.create( "products/" + productDto.getId() ) ).body(productDto);
         }
     }
 
-
+    @ResponseStatus(value=HttpStatus.BAD_REQUEST, reason="Incorrect product data")
+    @ExceptionHandler(SQLException.class)
+    public String handleException(SQLException ex) {
+        return "Incorrect product data. " + ex.getMessage();
+    }
 
 }
