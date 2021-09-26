@@ -1,5 +1,7 @@
 package ru.gb.task7.service.implementation;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.gb.task7.model.Product;
 import ru.gb.task7.repository.ProductRepository;
@@ -24,6 +26,11 @@ public class ProductServiceImplementation implements ProductService {
     @Override
     public List<Product> findAllProducts() {
         return productRepository.findByIsDeletedFalse();
+    }
+
+    @Override
+    public Page<Product> getAllProductsByPages(Pageable pageable) {
+        return productRepository.findAllByIsDeletedFalse(pageable);
     }
 
     @Override

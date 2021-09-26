@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Products List</title>
+</head>
+<body>
+<h1>Enjoy our products!</h1>
+    <table border="1">
+        <thead>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Price</th>
+            <th></th>
+        </thead>
+        <tbody>
+            <tr th:each="product : ${products}">
+                <td th:text="${product.id}"></td>
+                <td th:text="${product.title}"></td>
+                <td th:text="${product.price}"></td>
+                <td>
+                    <a th:href="@{/mvc/products/{id}/delete(id=${product.id})}"><button>X</button></a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+<div th:if="${totalPages > 0}">
+    <table>
+        <tr>
+            <td width="20%" align="left">
+                <a th:href="@{/mvc/products(page=${prevPage})}">
+                    <button th:if="${prevPage > 0}"> <= </button>
+                </a>
+            </td>
+            <td width="60%" align="center">
+                Page <span th:text="${currentPage}"></span> of <span th:text="${totalPages}"></span>
+            </td>
+            <td width="20%" align="right">
+                <a th:href="@{/mvc/products(page=${nextPage})}">
+                    <button th:if="${nextPage < totalPages}"> => </button>
+                </a>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
