@@ -1,6 +1,8 @@
 package ru.gb.task7.model;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.HashSet;
 
 @Entity
 @Table(name = "products")
@@ -54,4 +56,5 @@ public class Product {
     public void setDeleted(boolean deleted) {
         isDeleted = deleted;
     }
+
 }
