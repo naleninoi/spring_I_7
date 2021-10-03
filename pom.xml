@@ -12,7 +12,7 @@
 	<artifactId>task7</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>task7</name>
-	<description>Gb task9 Spring Rest project</description>
+	<description>Gb task11 Spring Security project</description>
 	<properties>
 		<java.version>13</java.version>
 	</properties>
@@ -26,6 +26,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 
 		<dependency>
