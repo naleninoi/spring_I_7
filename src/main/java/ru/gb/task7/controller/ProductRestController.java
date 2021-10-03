@@ -72,10 +72,4 @@ public class ProductRestController {
         }
     }
 
-    @ResponseStatus(value=HttpStatus.BAD_REQUEST, reason="Incorrect product data")
-    @ExceptionHandler(SQLException.class)
-    public String handleException(SQLException ex) {
-        return "Incorrect product data. " + ex.getMessage();
-    }
-
 }

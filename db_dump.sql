@@ -33,3 +33,26 @@ INSERT INTO `products` (`id`, `title`, `price`) VALUES ('17', 'rem', '5463.11');
 INSERT INTO `products` (`id`, `title`, `price`) VALUES ('18', 'qui', '579.58');
 INSERT INTO `products` (`id`, `title`, `price`) VALUES ('19', 'beatae', '8640.23');
 INSERT INTO `products` (`id`, `title`, `price`) VALUES ('20', 'natus', '9106.60');
+
+DROP TABLE IF EXISTS `carts`;
+
+CREATE TABLE `carts` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+DROP TABLE IF EXISTS `cart_positions`;
+
+
+CREATE TABLE `cart_positions` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `cart_id` bigint unsigned NOT NULL,
+  `product_id` bigint unsigned NOT NULL,
+  `quantity` int unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `cart_positions_cart_id_IDX` (`cart_id`,`product_id`) USING BTREE,
+  KEY `cart_positions_FK` (`product_id`),
+  CONSTRAINT `cart_positions_FK` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`),
+  CONSTRAINT `cart_positions_FK_1` FOREIGN KEY (`cart_id`) REFERENCES `carts` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
