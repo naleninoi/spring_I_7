@@ -56,3 +56,55 @@ CREATE TABLE `cart_positions` (
   CONSTRAINT `cart_positions_FK` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`),
   CONSTRAINT `cart_positions_FK_1` FOREIGN KEY (`cart_id`) REFERENCES `carts` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+DROP TABLE IF EXISTS `users`;
+
+CREATE TABLE `users` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `password` varchar(100) NOT NULL,
+  `is_active` tinyint NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `users_username_IDX` (`username`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+INSERT INTO `users` (username,password,is_active) VALUES
+	 ('Superadmin','$2a$10$kiAczBoFJTQxrf3Xmvy9HuD5ef5qiYz3Z6cwnJJg/OuoEAEcxg4X.',1),
+	 ('Admin','$2a$10$zM1CBjVplJnvEpEkCnWdF.PsqLaxOckiO2MSdoSPRFpUD271tPnoO',1),
+	 ('Manager','$2a$10$O8lcMWUsJ0s2lfQ1KXbNY.PCkaCIsbU6BzXlnV7hmeZYa/XfxcYdu',1);
+
+
+DROP TABLE IF EXISTS `roles`;
+
+CREATE TABLE `roles` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `role_type` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+INSERT INTO `roles` (role_type) VALUES
+	 ('ROLE_MANAGER'),
+	 ('ROLE_ADMIN'),
+	 ('ROLE_SUPERADMIN');
+
+
+
+DROP TABLE IF EXISTS `user_roles`;
+
+CREATE TABLE `user_roles` (
+  `user_id` bigint unsigned NOT NULL,
+  `role_id` bigint unsigned NOT NULL,
+  PRIMARY KEY (`user_id`,`role_id`),
+  KEY `user_roles_FK_1` (`role_id`),
+  CONSTRAINT `user_roles_FK` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `user_roles_FK_1` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+INSERT INTO `user_roles` (user_id,role_id) VALUES
+	 (1,1),
+	 (2,1),
+	 (3,1),
+	 (1,2),
+	 (2,2),
+	 (1,3);

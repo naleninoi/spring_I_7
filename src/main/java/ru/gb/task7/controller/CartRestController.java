@@ -2,19 +2,17 @@ package ru.gb.task7.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import ru.gb.task7.model.Cart;
-import ru.gb.task7.model.Product;
 import ru.gb.task7.render.CartDto;
 import ru.gb.task7.service.CartService;
 import ru.gb.task7.service.ProductService;
 
 import java.net.URI;
-import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping(value = "/carts")
@@ -46,6 +44,7 @@ public class CartRestController {
         }
     }
 
+    @Secured({"ROLE_ADMIN", "ROLE_SUPERADMIN"})
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteCart(@PathVariable Long id) {
         Optional<Cart> cart = cartService.findById(id);
